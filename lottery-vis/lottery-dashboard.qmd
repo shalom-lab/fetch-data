@@ -19,7 +19,6 @@ library(ggplot2)
 library(plotly)
 library(tidyr)
 library(DT)
-library(bslib)
 
 # 读取数据
 lottery_data <- fromJSON("../data/lottery_data.json")
