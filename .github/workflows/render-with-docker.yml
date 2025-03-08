@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Additional R Packages
         run: |
-          install.packages(c('plotly', 'DT', 'bslib'), repos = 'https://cloud.r-project.org')
+          install.packages(c('plotly', 'DT'), repos = 'https://cloud.r-project.org')
         shell: Rscript {0}
 
       - name: Render Quarto Project
