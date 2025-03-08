@@ -13,21 +13,16 @@ on:
 
 # 设置 GITHUB_TOKEN 的权限
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-# 允许一个并发部署
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -50,27 +45,15 @@ jobs:
           install.packages(c('jsonlite', 'dplyr', 'ggplot2', 'plotly', 'tidyr', 'DT', 'bslib'), repos = 'https://cloud.r-project.org')
         shell: Rscript {0}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         with:
-          to: dashboard
+          to: html
           path: lottery-vis/lottery-dashboard.qmd
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Publish to GitHub Pages
+        uses: quarto-dev/quarto-actions/publish@v2
         with:
-          path: ./lottery-vis/_site
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2 
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
