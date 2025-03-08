@@ -57,17 +57,6 @@ jobs:
           cp -r lottery-vis/lottery-dashboard.html /tmp/rendered/
           cp -r lottery-vis/lottery-dashboard_files /tmp/rendered/ || true
           
-          # 创建一个重定向的index.html
-          echo '<!DOCTYPE html>
-          <html>
-            <head>
-              <meta http-equiv="refresh" content="0; url=./lottery-dashboard.html">
-            </head>
-            <body>
-              <p>Please wait while you are redirected to the <a href="./lottery-dashboard.html">dashboard</a>.</p>
-            </body>
-          </html>' > /tmp/rendered/index.html
-          
           # 切换到gh-pages分支
           git fetch origin gh-pages
           git checkout gh-pages
