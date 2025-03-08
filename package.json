@@ -1,0 +1,20 @@
+{
+  "name": "fetch-data",
+  "version": "1.0.0",
+  "description": "A utility package for fetching data",
+  "main": "fetch_lottery.js",
+  "scripts": {
+    "start": "node fetch_lottery.js"
+  },
+  "keywords": [
+    "fetch",
+    "data",
+    "api",
+    "http"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^22.3.0"
+  }
+} 

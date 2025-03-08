@@ -1,0 +1,240 @@
+---
+title: "中国彩票数据分析仪表板"
+format: 
+  dashboard:
+    theme:
+      light: [cosmo, custom.scss]
+    nav-buttons: [github]
+    logo: "https://raw.githubusercontent.com/quarto-dev/quarto-web/main/favicon.png"
+    nav-buttons: 
+      - icon: github
+        href: "https://github.com/YOUR_USERNAME/YOUR_REPO"
+    open-graph: true
+    twitter-card: true
+    page-layout: custom
+    sidebar: false
+    page-navigation: true
+---
+
+```{r setup}
+#| include: false
+library(jsonlite)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(tidyr)
+library(DT)
+library(bslib)
+
+# 读取数据
+lottery_data <- fromJSON("data/lottery_data.json")
+
+# 数据预处理函数
+format_currency <- function(x) {
+  paste0("¥", format(x, big.mark=",", scientific=FALSE))
+}
+
+# 创建数据表格
+create_lottery_table <- function(data, type) {
+  if(type == "ssq" || type == "qlc") {
+    df <- data.frame(
+      期号 = data$period,
+      开奖号码 = sapply(1:length(data$numbers), function(i) paste(data$numbers[[i]], collapse=" ")),
+      奖池金额 = format_currency(data$poolAmount),
+      stringsAsFactors = FALSE
+    )
+  } else if(type == "fc3d") {
+    df <- data.frame(
+      期号 = data$period,
+      开奖号码 = sapply(1:length(data$numbers), function(i) paste(data$numbers[[i]], collapse="")),
+      stringsAsFactors = FALSE
+    )
+  } else if(type == "kl8") {
+    df <- data.frame(
+      期号 = data$period,
+      开奖号码 = sapply(1:length(data$numbers), function(i) paste(data$numbers[[i]], collapse=" ")),
+      stringsAsFactors = FALSE
+    )
+  }
+  return(df)
+}
+```
+
+# 双色球分析 {.storyboard}
+
+## Column {width=650}
+
+### 奖池金额趋势
+
+```{r}
+#| title: 双色球奖池金额趋势
+ssq_pool_trend <- ggplot(data.frame(
+    period = lottery_data$ssq$period,
+    amount = lottery_data$ssq$poolAmount
+  ), aes(x = period, y = amount)) +
+  geom_line(color = "red") +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "双色球奖池金额趋势",
+       x = "期号",
+       y = "奖池金额（元）")
+
+ggplotly(ssq_pool_trend)
+```
+
+### 红球出现频率
+
+```{r}
+#| title: 红球出现频率分析
+ssq_red_freq <- lottery_data$ssq$numbers %>%
+  head(6) %>%
+  table() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) +
+  geom_bar(stat = "identity", fill = "red") +
+  theme_minimal() +
+  labs(title = "红球出现频率",
+       x = "号码",
+       y = "频次")
+
+ggplotly(ssq_red_freq)
+```
+
+### 开奖数据 {.tabset}
+
+```{r}
+#| title: 双色球开奖数据
+ssq_data <- create_lottery_table(lottery_data$ssq, "ssq")
+datatable(ssq_data,
+          options = list(
+            pageLength = 10,
+            dom = 'ftip',
+            scrollX = TRUE
+          ),
+          rownames = FALSE,
+          class = 'compact stripe hover')
+```
+
+# 快乐8分析
+
+## Column
+
+### 号码分布热图
+
+```{r}
+#| title: 快乐8号码分布
+kl8_heatmap <- lottery_data$kl8$numbers %>%
+  table() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = ., y = "频次", fill = Freq)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "red") +
+  theme_minimal() +
+  labs(title = "快乐8号码分布热图")
+
+ggplotly(kl8_heatmap)
+```
+
+### 开奖数据 {.tabset}
+
+```{r}
+#| title: 快乐8开奖数据
+kl8_data <- create_lottery_table(lottery_data$kl8, "kl8")
+datatable(kl8_data,
+          options = list(
+            pageLength = 10,
+            dom = 'ftip',
+            scrollX = TRUE
+          ),
+          rownames = FALSE,
+          class = 'compact stripe hover')
+```
+
+# 福彩3D分析
+
+## Column
+
+### 各位数字分布
+
+```{r}
+#| title: 福彩3D数字分布
+fc3d_digit_dist <- lottery_data$fc3d$numbers %>%
+  as.data.frame() %>%
+  gather(position, number) %>%
+  ggplot(aes(x = number)) +
+  geom_histogram(binwidth = 1, fill = "blue", alpha = 0.7) +
+  facet_wrap(~position) +
+  theme_minimal() +
+  labs(title = "福彩3D各位数字分布")
+
+ggplotly(fc3d_digit_dist)
+```
+
+### 开奖数据 {.tabset}
+
+```{r}
+#| title: 福彩3D开奖数据
+fc3d_data <- create_lottery_table(lottery_data$fc3d, "fc3d")
+datatable(fc3d_data,
+          options = list(
+            pageLength = 10,
+            dom = 'ftip',
+            scrollX = TRUE
+          ),
+          rownames = FALSE,
+          class = 'compact stripe hover')
+```
+
+# 七乐彩分析 {.storyboard}
+
+## Column {width=650}
+
+### 号码出现频率
+
+```{r}
+#| title: 七乐彩号码频率
+qlc_freq <- lottery_data$qlc$numbers %>%
+  table() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) +
+  geom_bar(stat = "identity", fill = "orange") +
+  theme_minimal() +
+  labs(title = "七乐彩号码出现频率",
+       x = "号码",
+       y = "频次")
+
+ggplotly(qlc_freq)
+```
+
+### 奖池趋势
+
+```{r}
+#| title: 七乐彩奖池趋势
+qlc_pool_trend <- ggplot(data.frame(
+    period = lottery_data$qlc$period,
+    amount = lottery_data$qlc$poolAmount
+  ), aes(x = period, y = amount)) +
+  geom_line(color = "orange") +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "七乐彩奖池金额趋势",
+       x = "期号",
+       y = "奖池金额（元）")
+
+ggplotly(qlc_pool_trend)
+```
+
+### 开奖数据 {.tabset}
+
+```{r}
+#| title: 七乐彩开奖数据
+qlc_data <- create_lottery_table(lottery_data$qlc, "qlc")
+datatable(qlc_data,
+          options = list(
+            pageLength = 10,
+            dom = 'ftip',
+            scrollX = TRUE
+          ),
+          rownames = FALSE,
+          class = 'compact stripe hover')
+``` 
