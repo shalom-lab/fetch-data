@@ -50,28 +50,6 @@ jobs:
           to: dashboard
           path: lottery-vis/lottery-dashboard.qmd
 
-      - name: Initialize gh-pages branch
-        run: |
-          # 确保我们在正确的目录中
-          cd /__w/fetch-data/fetch-data
-          
-          # 检查远程分支是否存在
-          if ! git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
-            echo "Creating gh-pages branch..."
-            # 创建并切换到新的gh-pages分支
-            git checkout --orphan gh-pages
-            # 清理工作目录
-            git rm -rf .
-            # 创建一个空提交
-            git commit --allow-empty -m "Initial gh-pages commit"
-            # 推送到远程
-            git push origin gh-pages
-            # 返回到主分支
-            git checkout master
-          else
-            echo "gh-pages branch already exists"
-          fi
-
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
