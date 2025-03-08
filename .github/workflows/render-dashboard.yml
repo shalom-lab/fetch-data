@@ -48,12 +48,13 @@ jobs:
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         with:
-          to: html
+          to: dashboard
           path: lottery-vis/lottery-dashboard.qmd
 
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
+          path: lottery-vis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
