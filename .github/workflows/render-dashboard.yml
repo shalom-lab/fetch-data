@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]    # main 分支有推送时也触发
     paths:
-      - data/lottery_data.json
+      -  'data/lottery_data.json"
       - 'lottery-vis/**'
       - '.github/workflows/**'
 
