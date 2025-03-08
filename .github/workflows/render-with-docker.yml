@@ -47,7 +47,7 @@ jobs:
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         with:
-          to: html
+          to: dashboard
           path: lottery-vis/lottery-dashboard.qmd
 
       - name: Deploy to GitHub Pages
