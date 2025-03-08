@@ -52,20 +52,23 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
+          # 保存渲染的文件到临时目录
+          mkdir -p /tmp/rendered
+          cp -r lottery-vis/lottery-dashboard.html /tmp/rendered/index.html
+          cp -r lottery-vis/lottery-dashboard_files /tmp/rendered/ || true
+          cp -r lottery-vis/custom.scss /tmp/rendered/ || true
+          
           # 切换到gh-pages分支
           git fetch origin gh-pages
           git checkout gh-pages
           
-          # 清理旧文件
-          git rm -rf .
-          git clean -fxd
+          # 清理当前目录（保留.git）
+          find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} +
           
           # 复制新文件
-          cp -r lottery-vis/lottery-dashboard.html index.html
-          cp -r lottery-vis/lottery-dashboard_files . || true
-          cp -r lottery-vis/custom.scss . || true
+          cp -r /tmp/rendered/* .
           
           # 提交并推送
-          git add .
+          git add -A
           git commit -m "Update GitHub Pages"
           git push origin gh-pages 
