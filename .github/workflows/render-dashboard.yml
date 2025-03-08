@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]    # main 分支有推送时也触发
     paths:
-      -  'data/lottery_data.json"
+      - 'data/lottery_data.json'
       - 'lottery-vis/**'
       - '.github/workflows/**'
 
@@ -39,17 +39,18 @@ jobs:
         with:
           r-version: '4.2.0'
 
-      - name: Install R Dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Cache R packages
+        uses: actions/cache@v3
         with:
-          packages: |
-            any::jsonlite
-            any::dplyr
-            any::ggplot2
-            any::plotly
-            any::tidyr
-            any::DT
-            any::bslib
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-r-
+
+      - name: Install R Dependencies
+        run: |
+          install.packages(c('jsonlite', 'dplyr', 'ggplot2', 'plotly', 'tidyr', 'DT', 'bslib'))
+        shell: Rscript {0}
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
