@@ -56,7 +56,6 @@ jobs:
           mkdir -p /tmp/rendered
           cp -r lottery-vis/lottery-dashboard.html /tmp/rendered/index.html
           cp -r lottery-vis/lottery-dashboard_files /tmp/rendered/ || true
-          cp -r lottery-vis/custom.scss /tmp/rendered/ || true
           
           # 切换到gh-pages分支
           git fetch origin gh-pages
