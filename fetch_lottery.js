@@ -1,13 +1,21 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
 async function scrapeData() {
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--disable-gpu',
+            '--lang=zh-CN,zh'
+        ]
+    });
+
     try {
-        // 启动浏览器
-        const browser = await puppeteer.launch({
-            headless: "new"
-        });
         const page = await browser.newPage();
 
         // 访问目标网页
@@ -117,68 +125,41 @@ async function scrapeData() {
             }
         });
 
-        await browser.close();
-
-        // 创建数据目录（如果不存在）
-        const dataDir = path.join(__dirname, 'data');
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir);
-        }
-
-        const fileName = path.join(dataDir, 'lottery_data.json');
-        let existingData = { ssq: [], kl8: [], fc3d: [], qlc: [] };
-
-        // 读取现有数据（如果存在）
-        if (fs.existsSync(fileName)) {
-            try {
-                existingData = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-            } catch (err) {
-                console.error('读取现有数据失败:', err);
-            }
-        }
-
-        // 合并并去重数据
-        ['ssq', 'kl8', 'fc3d', 'qlc'].forEach(type => {
-            if (Object.keys(lotteryData[type]).length > 0) {
-                // 将新数据添加到对应类型的数组中
-                const newData = {
-                    ...lotteryData[type],
-                    fetchDate: new Date().toISOString()
-                };
-
-                // 确保数组存在
-                if (!Array.isArray(existingData[type])) {
-                    existingData[type] = [];
-                }
-
-                // 添加新数据
-                existingData[type].push(newData);
-
-                // 按period去重，保留最新的数据
-                existingData[type] = Object.values(
-                    existingData[type].reduce((acc, curr) => {
-                        const period = curr.period;
-                        if (!acc[period] || new Date(acc[period].fetchDate) < new Date(curr.fetchDate)) {
-                            acc[period] = curr;
-                        }
-                        return acc;
-                    }, {})
-                );
-
-                // 按期号排序（降序）
-                existingData[type].sort((a, b) => b.period - a.period);
-            }
-        });
-
-        // 保存合并后的数据
-        fs.writeFileSync(fileName, JSON.stringify(existingData, null, 2));
-        console.log(`数据已保存到: ${fileName}`);
-
+        return lotteryData;
     } catch (error) {
         console.error('抓取数据时出错:', error);
+        throw error;
+    } finally {
+        await browser.close();
+    }
+}
+
+// 确保数据目录存在
+async function ensureDataDir() {
+    const dataDir = path.join(__dirname, 'data');
+    try {
+        await fs.access(dataDir);
+    } catch {
+        await fs.mkdir(dataDir);
+    }
+    return dataDir;
+}
+
+// 主函数
+async function main() {
+    try {
+        const dataDir = await ensureDataDir();
+        const data = await scrapeData();
+        await fs.writeFile(
+            path.join(dataDir, 'lottery_data.json'),
+            JSON.stringify(data, null, 2),
+            'utf8'
+        );
+        console.log('数据已成功保存到 lottery_data.json');
+    } catch (error) {
+        console.error('程序执行出错:', error);
         process.exit(1);
     }
 }
 
-// 执行抓取
-scrapeData(); 
+main(); 
