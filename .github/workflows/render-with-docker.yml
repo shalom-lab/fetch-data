@@ -2,7 +2,7 @@ name: Render and Deploy with Docker
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 0:00 运行
+    - cron: '0 18 * * *'  # 每天北京时间凌晨2点运行（UTC 18:00）
   workflow_dispatch:      # 允许手动触发
   push:
     branches: [ master ]    # master 分支有推送时也触发
@@ -54,8 +54,19 @@ jobs:
         run: |
           # 保存渲染的文件到临时目录
           mkdir -p /tmp/rendered
-          cp -r lottery-vis/lottery-dashboard.html /tmp/rendered/index.html
+          cp -r lottery-vis/lottery-dashboard.html /tmp/rendered/
           cp -r lottery-vis/lottery-dashboard_files /tmp/rendered/ || true
+          
+          # 创建一个重定向的index.html
+          echo '<!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url=./lottery-dashboard.html">
+            </head>
+            <body>
+              <p>Please wait while you are redirected to the <a href="./lottery-dashboard.html">dashboard</a>.</p>
+            </body>
+          </html>' > /tmp/rendered/index.html
           
           # 切换到gh-pages分支
           git fetch origin gh-pages
