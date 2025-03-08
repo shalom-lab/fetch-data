@@ -28,6 +28,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Configure Git
+        run: |
+          git config --global --add safe.directory /__w/fetch-data/fetch-data
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
@@ -44,14 +50,26 @@ jobs:
           to: dashboard
           path: lottery-vis/lottery-dashboard.qmd
 
-      - name: Create gh-pages branch if not exists
+      - name: Initialize gh-pages branch
         run: |
-          if ! git ls-remote --heads origin gh-pages; then
+          # 确保我们在正确的目录中
+          cd /__w/fetch-data/fetch-data
+          
+          # 检查远程分支是否存在
+          if ! git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            echo "Creating gh-pages branch..."
+            # 创建并切换到新的gh-pages分支
             git checkout --orphan gh-pages
-            git reset --hard
-            git commit --allow-empty -m "Initialize gh-pages branch"
+            # 清理工作目录
+            git rm -rf .
+            # 创建一个空提交
+            git commit --allow-empty -m "Initial gh-pages commit"
+            # 推送到远程
             git push origin gh-pages
+            # 返回到主分支
             git checkout main
+          else
+            echo "gh-pages branch already exists"
           fi
 
       - name: Publish to GitHub Pages
