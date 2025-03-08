@@ -1,1 +1,21 @@
 node_modules
+.Rproj.user
+
+# RStudio 项目文件
+.Rproj.user/
+
+# R 历史记录文件
+.Rhistory
+
+# R 会话数据文件
+.RData
+.RDataTmp
+
+# 用户特定文件
+.Ruserdata
+
+# 由 R Markdown 生成的缓存目录
+*_cache/
+cache/
+
+lottery-vis/lottery-dashboard_files/

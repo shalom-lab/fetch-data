@@ -1,20 +1,15 @@
 ---
 title: "中国彩票数据分析仪表板"
-format: 
+format:
   dashboard:
     theme:
-      light: [cosmo, custom.scss]
-    nav-buttons: [github]
-    logo: "https://raw.githubusercontent.com/quarto-dev/quarto-web/main/favicon.png"
-    nav-buttons: 
-      - icon: github
-        href: "https://github.com/YOUR_USERNAME/YOUR_REPO"
+      light: [custom.scss]
     open-graph: true
     twitter-card: true
-    page-layout: custom
+    orientation: rows
     sidebar: false
-    page-navigation: true
 ---
+
 
 ```{r setup}
 #| include: false
@@ -27,7 +22,7 @@ library(DT)
 library(bslib)
 
 # 读取数据
-lottery_data <- fromJSON("data/lottery_data.json")
+lottery_data <- fromJSON("../data/lottery_data.json")
 
 # 数据预处理函数
 format_currency <- function(x) {
