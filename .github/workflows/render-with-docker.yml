@@ -47,26 +47,25 @@ jobs:
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         with:
-          to: dashboard
+          to: html
           path: lottery-vis/lottery-dashboard.qmd
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Prepare gh-pages content
-        run: |
-          # 创建临时目录
-          mkdir -p _site
-          # 复制渲染后的文件到_site目录
-          cp -r lottery-vis/lottery-dashboard.html _site/index.html
-          cp -r lottery-vis/lottery-dashboard_files _site/ || true
-          cp -r lottery-vis/custom.scss _site/ || true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: _site
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2 
+        run: |
+          # 切换到gh-pages分支
+          git fetch origin gh-pages
+          git checkout gh-pages
+          
+          # 清理旧文件
+          git rm -rf .
+          git clean -fxd
+          
+          # 复制新文件
+          cp -r lottery-vis/lottery-dashboard.html index.html
+          cp -r lottery-vis/lottery-dashboard_files . || true
+          cp -r lottery-vis/custom.scss . || true
+          
+          # 提交并推送
+          git add .
+          git commit -m "Update GitHub Pages"
+          git push origin gh-pages 
