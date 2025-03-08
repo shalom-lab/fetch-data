@@ -4,7 +4,7 @@
   "description": "A utility package for fetching data",
   "main": "fetch_lottery.js",
   "scripts": {
-    "start": "node fetch_lottery.js"
+    "fetch": "node fetch_lottery.js"
   },
   "keywords": [
     "fetch",
