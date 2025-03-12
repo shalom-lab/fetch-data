@@ -2,7 +2,7 @@
   "ssq": [
     {
       "name": "ssq",
-      "date": "2025-03-11",
+      "date": "2025-03-12",
       "period": null,
       "poolAmount": 0,
       "numbers": [
@@ -24,50 +24,50 @@
   "kl8": [
     {
       "name": "kl8",
-      "date": "2025-03-11",
+      "date": "2025-03-12",
       "period": null,
       "poolAmount": 0,
       "numbers": [
         3,
-        7,
         9,
-        11,
-        15,
-        16,
-        22,
-        24,
-        28,
+        10,
+        14,
+        23,
+        27,
         34,
-        44,
-        47,
-        48,
-        51,
-        52,
+        38,
+        39,
+        45,
+        50,
+        59,
+        63,
+        65,
         70,
         71,
-        73,
+        72,
+        75,
         76,
-        78
+        77
       ],
       "links": {
-        "detail": "https://www.cwl.gov.cn/c/2025/03/11/608053.shtml",
+        "detail": "https://www.cwl.gov.cn/c/2025/03/12/608260.shtml",
         "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/kl8/",
-        "video": "https://www.cwl.gov.cn/c/2025/03/11/608055.shtml"
+        "video": "https://www.cwl.gov.cn/c/2025/03/12/608261.shtml"
       }
     }
   ],
   "fc3d": [
     {
       "name": "fc3d",
-      "date": "2025-03-11",
+      "date": "2025-03-12",
       "period": null,
       "numbers": [
-        9,
-        3,
-        8
+        4,
+        7,
+        6
       ],
       "links": {
-        "detail": "https://www.cwl.gov.cn/c/2025/03/11/608052.shtml",
+        "detail": "https://www.cwl.gov.cn/c/2025/03/12/608259.shtml",
         "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/fc3d/"
       }
     }
@@ -75,23 +75,23 @@
   "qlc": [
     {
       "name": "qlc",
-      "date": "2025-03-11",
+      "date": "2025-03-12",
       "period": null,
       "poolAmount": 0,
       "numbers": [
-        1,
         7,
+        9,
         11,
-        15,
-        17,
+        18,
         19,
+        20,
         22,
-        23
+        16
       ],
       "links": {
-        "detail": "https://www.cwl.gov.cn/c/2025/03/10/607944.shtml",
+        "detail": "https://www.cwl.gov.cn/c/2025/03/12/608258.shtml",
         "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/qlc/",
-        "video": "https://www.cwl.gov.cn/c/2025/03/10/607948.shtml"
+        "video": "https://www.cwl.gov.cn/c/2025/03/12/608262.shtml"
       }
     }
   ]
