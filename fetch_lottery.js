@@ -25,11 +25,6 @@ async function scrapeData() {
 
         // 抓取数据
         const lotteryData = await page.evaluate(() => {
-            // 提取数字的辅助函数
-            const extractNumber = (str) => {
-                const matches = str.match(/\\d+/g);
-                return matches ? matches.join('') : '';
-            };
 
             // 提取金额的辅助函数
             const extractAmount = (str) => {
@@ -54,7 +49,7 @@ async function scrapeData() {
                 const ssqData = {
                     name: 'ssq',
                     date: new Date().toISOString().split('T')[0], // 添加日期
-                    period: parseInt(extractNumber(ssqElement.querySelector('.stage')?.textContent || '')),
+                    period: parseInt(ssqElement.querySelector('.stage')?.textContent.slice(1, -1)  || ''),
                     poolAmount: extractAmount(ssqElement.querySelector('.red')?.textContent || '0'),
                     numbers: Array.from(ssqElement.querySelectorAll('.qiu .lotteryNum')).map(num => parseInt(num.textContent)),
                     links: {
@@ -72,7 +67,7 @@ async function scrapeData() {
                 const kl8Data = {
                     name: 'kl8',
                     date: new Date().toISOString().split('T')[0],
-                    period: parseInt(extractNumber(kl8Element.querySelector('.stage')?.textContent || '')),
+                    period: parseInt(kl8Element.querySelector('.stage')?.textContent.slice(1, -1) || ''),
                     poolAmount: extractAmount(kl8Element.querySelector('.red')?.textContent || '0'),
                     numbers: Array.from(kl8Element.querySelectorAll('.qiu .lotteryNum')).map(num => parseInt(num.textContent)),
                     links: {
@@ -90,7 +85,7 @@ async function scrapeData() {
                 const fc3dData = {
                     name: 'fc3d',
                     date: new Date().toISOString().split('T')[0],
-                    period: parseInt(extractNumber(fc3dElement.querySelector('.stage')?.textContent || '')),
+                    period: parseInt(fc3dElement.querySelector('.stage')?.textContent.slice(1, -1) || ''),
                     numbers: Array.from(fc3dElement.querySelectorAll('.qiu .lotteryNum')).map(num => parseInt(num.textContent)),
                     links: {
                         detail: fc3dElement.querySelector('.fcXqLink')?.href,
@@ -106,7 +101,7 @@ async function scrapeData() {
                 const qlcData = {
                     name: 'qlc',
                     date: new Date().toISOString().split('T')[0],
-                    period: parseInt(extractNumber(qlcElement.querySelector('.stage')?.textContent || '')),
+                    period: parseInt(qlcElement.querySelector('.stage')?.textContent.slice(1, -1) || ''),
                     poolAmount: extractAmount(qlcElement.querySelector('.red')?.textContent || '0'),
                     numbers: Array.from(qlcElement.querySelectorAll('.qiu .lotteryNum')).map(num => parseInt(num.textContent)),
                     links: {
