@@ -2,7 +2,7 @@
   "ssq": [
     {
       "name": "ssq",
-      "date": "2025-03-25",
+      "date": "2025-03-26",
       "period": 2025032,
       "poolAmount": 0,
       "numbers": [
@@ -122,6 +122,39 @@
     }
   ],
   "kl8": [
+    {
+      "name": "kl8",
+      "date": "2025-03-26",
+      "period": 2025075,
+      "poolAmount": 0,
+      "numbers": [
+        4,
+        9,
+        12,
+        13,
+        20,
+        23,
+        25,
+        29,
+        38,
+        41,
+        45,
+        48,
+        50,
+        51,
+        53,
+        54,
+        55,
+        62,
+        68,
+        80
+      ],
+      "links": {
+        "detail": "https://www.cwl.gov.cn/c/2025/03/26/610254.shtml",
+        "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/kl8/",
+        "video": "https://www.cwl.gov.cn/c/2025/03/26/610255.shtml"
+      }
+    },
     {
       "name": "kl8",
       "date": "2025-03-25",
@@ -555,6 +588,20 @@
   "fc3d": [
     {
       "name": "fc3d",
+      "date": "2025-03-26",
+      "period": 2025075,
+      "numbers": [
+        7,
+        0,
+        9
+      ],
+      "links": {
+        "detail": "https://www.cwl.gov.cn/c/2025/03/26/610252.shtml",
+        "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/fc3d/"
+      }
+    },
+    {
+      "name": "fc3d",
       "date": "2025-03-25",
       "period": 2025074,
       "numbers": [
@@ -737,6 +784,27 @@
     }
   ],
   "qlc": [
+    {
+      "name": "qlc",
+      "date": "2025-03-26",
+      "period": 2025032,
+      "poolAmount": 0,
+      "numbers": [
+        1,
+        10,
+        17,
+        20,
+        22,
+        27,
+        30,
+        3
+      ],
+      "links": {
+        "detail": "https://www.cwl.gov.cn/c/2025/03/26/610253.shtml",
+        "history": "https://www.cwl.gov.cn/ygkj/wqkjgg/qlc/",
+        "video": "https://www.cwl.gov.cn/c/2025/03/26/610256.shtml"
+      }
+    },
     {
       "name": "qlc",
       "date": "2025-03-25",
